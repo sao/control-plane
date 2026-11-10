@@ -2,7 +2,7 @@
   'use strict';
   const CP = (globalThis.CP = globalThis.CP || {});
 
-  // All sound is synthesised. No audio files.
+  // All sound is synthesized. No audio files.
   const A = {
     ctx: null, master: null, sfxGain: null, musGain: null,
     sfxVol: 0.7, musVol: 0.45, lastTick: 0, musicOn: false, timer: null, step: 0, nextT: 0, intensity: 0,

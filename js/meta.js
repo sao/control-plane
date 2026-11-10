@@ -47,7 +47,7 @@
     { id: 'stars20', name: 'Well architected', desc: 'Earn 20 stars.' },
     { id: 'perfect', name: 'Keeper of the log', desc: 'Earn all 33 stars.' },
     { id: 'endless5', name: 'In production', desc: 'Survive 5 waves of endless mode.' },
-    { id: 'endless10', name: 'On call for ever', desc: 'Survive 10 waves of endless mode.' },
+    { id: 'endless10', name: 'On call forever', desc: 'Survive 10 waves of endless mode.' },
   ];
 
   // The guide's cheat sheet. Each row unlocks with a mission.
@@ -70,7 +70,7 @@
     { name: 'Design for an untrusted majority user', text: 'The book\'s security model trusts the application and guards the perimeter. When most sessions belong to agents, enforcement has to sit inside the database, on every query.' },
     { name: 'Make undo larger than the transaction', text: 'Agents fail by succeeding at the wrong thing. The useful units of undo are the branch before commit and point-in-time recovery after.' },
     { name: 'Count databases, not just rows', text: 'Scalability now includes how many databases exist and how fast one starts from nothing. Scale-to-zero and instant creation are capacity features.' },
-    { name: 'Treat legibility as correctness', text: 'A model acts on names, comments, error messages, and tool descriptions. Text the book would call documentation now changes system behaviour.' },
+    { name: 'Treat legibility as correctness', text: 'A model acts on names, comments, error messages, and tool descriptions. Text the book would call documentation now changes system behavior.' },
     { name: 'Keep one deterministic source of truth', text: 'Models are non-deterministic and their outputs are derived data. Facts, decisions, and history live in the database as an ordered log.' },
     { name: 'Attribute every action', text: 'Who changed this, on whose behalf, and with what instruction must be answerable from the data. Identity for agents is a data model question.' },
   ];

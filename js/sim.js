@@ -630,7 +630,7 @@
       if (this.integrity <= 0) { this.integrity = 0; return this.lose('integrity'); }
       if (this.budget <= 0) { this.budget = 0; return this.lose('budget'); }
       if (this.wt >= w.dur) {
-        if (this.wt >= w.dur + 45) { // nothing may hang a wave for ever
+        if (this.wt >= w.dur + 45) { // nothing may hang a wave forever
           for (const c of this.cards.slice()) this.answer(c.id, c.scripted ? c.options.length - 1 : 'no', true);
           this.packets = []; this.pending = [];
           for (const id in this.nodes) { this.nodes[id].queue = []; this.nodes[id].busy = []; }

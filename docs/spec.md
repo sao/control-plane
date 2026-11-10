@@ -5,7 +5,7 @@ A browser game that teaches *Designing Data-Intensive Applications, Evolved for 
 ## Goals
 
 - Teach each of the guide's 11 sections by doing: the book's concept, what agents change, and the Postgres practice.
-- Make the player reason about trade-offs. Every defence has the cost the guide describes.
+- Make the player reason about trade-offs. Every defense has the cost the guide describes.
 - Short, medium, and long reward loops. Progress saved locally.
 - No build step and no dependencies. Runs by opening `index.html`, and from GitHub Pages.
 
@@ -61,7 +61,7 @@ An endless mode unlocks after mission 6.
 | `js/meta.js` | Ranks, upgrades, achievements, principles, cheat sheet |
 | `js/sim.js` | Simulation. No DOM, deterministic for a given seed |
 | `js/save.js` | Local storage, export, import, reset |
-| `js/audio.js` | Synthesised sound effects and ambient music |
+| `js/audio.js` | Synthesized sound effects and ambient music |
 | `js/render.js` | Canvas renderer |
 | `js/ui.js` | Screens and heads-up display |
 | `js/coach.js` | Guided tutorial for mission 1: spotlights one control at a time and waits for the player to use it |

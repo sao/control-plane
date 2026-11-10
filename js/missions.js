@@ -64,7 +64,7 @@
     // ------------------------------------------------------------------ 2
     {
       id: 'm2', n: 2, income: 0.4, title: 'The Schema Is A Prompt', sub: 'Data models and query languages',
-      tagline: 'Constraints are the last line of defence.',
+      tagline: 'Constraints are the last line of defense.',
       nodes: nodes('src', 'gw', 'leader'), slo: 500, credits: 90, stars: STARS,
       modules: ['constraints', 'legible', 'schemaOnRead', 'pgvector'], abilities: [], needsVector: true,
       brief: {
@@ -97,7 +97,7 @@
       rec: { 0: ['constraints'], 1: ['legible'], 2: ['pgvector'] },
       challenge: { text: 'Never switch on loose jsonb intake', test: (s) => !s.used.schemaOnRead },
       quiz: [
-        { q: 'When the writer is an agent, why does schema-on-write matter more?', a: ['It makes writes faster', 'Constraints reject a wrong write before it lands', 'It removes the need for indexes', 'Agents cannot read jsonb'], correct: 1, why: 'Schema-on-read would store the mistake silently. Constraints are the last line of defence.' },
+        { q: 'When the writer is an agent, why does schema-on-write matter more?', a: ['It makes writes faster', 'Constraints reject a wrong write before it lands', 'It removes the need for indexes', 'Agents cannot read jsonb'], correct: 1, why: 'Schema-on-read would store the mistake silently. Constraints are the last line of defense.' },
         { q: 'What does "the schema becomes a prompt" mean?', a: ['Schemas are written in English', 'Agents inspect names and comments, then decide what to do', 'Prompts are stored in tables', 'Agents generate schemas at random'], correct: 1, why: 'Ambiguous names cause wrong queries. The data model is now part of the interface.' },
         { q: 'Why does text-to-SQL work at all?', a: ['SQL is declarative: intent with a formal grammar, planned by the database', 'SQL is imperative and easy to step through', 'Models were trained only on SQL', 'Databases correct wrong queries'], correct: 0, why: 'A model produces intent, and the database turns it into an efficient plan.' },
       ],
@@ -318,7 +318,7 @@
         concept: [
           'A distributed system can be half broken. You send a request and get no reply. It may have been lost, the other side may have crashed, or the work was done and only the reply was lost. A timeout cannot tell you which.',
           'A process can freeze at any moment and resume unaware that time passed.',
-          'The defences: <b>idempotence</b> (doing it twice equals doing it once), <b>fencing tokens</b> (storage rejects a write carrying an older number), and <b>quorums</b> (truth is what a majority agrees on).',
+          'The defenses: <b>idempotence</b> (doing it twice equals doing it once), <b>fencing tokens</b> (storage rejects a write carrying an older number), and <b>quorums</b> (truth is what a majority agrees on).',
         ],
         agents: [
           'Model calls are the slowest, least reliable link, and they sit in the middle of every step.',
@@ -345,8 +345,8 @@
       challenge: { text: 'Let no duplicate land', test: (s) => !(s.stats.dup && s.stats.dup.landed) },
       quiz: [
         { q: 'Why is idempotence mandatory for agent tools?', a: ['It makes tools faster', 'Agents retry constantly, and a retry must not send the email twice', 'It encrypts requests', 'It replaces transactions'], correct: 1, why: 'Agents retry on errors, on timeouts, and when unsure whether something worked.' },
-        { q: 'An agent reads state, thinks for thirty seconds, and writes. Which hazard from the book is this?', a: ['Clock drift', 'Network partition', 'Process pause', 'Hot spot'], correct: 2, why: 'The defence is the same: the write carries a version, and the database rejects it if the data has moved on.' },
-        { q: 'Which fault class does prompt injection bring back?', a: ['Participants that may act against you: Byzantine faults', 'Disk failure', 'Replication lag', 'Deadlock'], correct: 0, why: 'The book sets aside lying nodes as rare inside one organisation. A steered agent is one.' },
+        { q: 'An agent reads state, thinks for thirty seconds, and writes. Which hazard from the book is this?', a: ['Clock drift', 'Network partition', 'Process pause', 'Hot spot'], correct: 2, why: 'The defense is the same: the write carries a version, and the database rejects it if the data has moved on.' },
+        { q: 'Which fault class does prompt injection bring back?', a: ['Participants that may act against you: Byzantine faults', 'Disk failure', 'Replication lag', 'Deadlock'], correct: 0, why: 'The book sets aside lying nodes as rare inside one organization. A steered agent is one.' },
       ],
     },
     // ------------------------------------------------------------------ 9
@@ -377,8 +377,8 @@
       waves: [
         { name: 'Claiming work', dur: 30, rate: [4, 5], mix: { read: 4, write: 3, job: 4, doubleClaim: 1 },
           intro: 'Agents take jobs from a queue by telling each other which one they picked. Two agents keep taking the same job.' },
-        { name: 'Cancelled, still committing', dur: 38, rate: [4.5, 6], mix: { read: 4, write: 3, job: 4, doubleClaim: 1, zombie: 0.8, action: 0.2, hijack: 0.08 },
-          intro: 'Tasks get cancelled. Their agents, paused mid-thought, wake up and commit anyway. Approval is already on: you are the coordinator.' },
+        { name: 'Canceled, still committing', dur: 38, rate: [4.5, 6], mix: { read: 4, write: 3, job: 4, doubleClaim: 1, zombie: 0.8, action: 0.2, hijack: 0.08 },
+          intro: 'Tasks get canceled. Their agents, paused mid-thought, wake up and commit anyway. Approval is already on: you are the coordinator.' },
         { name: 'Approval flood', dur: 40, rate: [5, 6.5], mix: { read: 4, write: 3, job: 4, doubleClaim: 1, zombie: 0.8, action: 1.5, hijack: 0.12 },
           intro: 'Approval requests arrive faster than you can read them. An unanswered approval leaves work stuck. What needs a person, and what happens when nobody answers?' },
         { name: 'Who did this?', dur: 42, rate: [6, 7.5], mix: { read: 4, write: 3, job: 4, doubleClaim: 1, zombie: 0.8, action: 0.6, hijack: 0.12, rogue: 0.6 }, events: [{ at: 22, type: 'leaderDown' }],
@@ -389,7 +389,7 @@
       quiz: [
         { q: 'Approval by a person resembles which protocol, and shares which weakness?', a: ['Raft: split votes', 'Two-phase commit: if the coordinator never responds, the work is stuck', 'Gossip: slow convergence', 'Quorum reads: stale values'], correct: 1, why: 'Approval flows need timeouts and a clear default.' },
         { q: 'How should several agents coordinate?', a: ['By messaging each other directly', 'Through shared, ordered state in the database', 'By taking turns on a timer', 'They should not'], correct: 1, why: 'Messages passed between agents are unreliable in every way the book lists.' },
-        { q: 'Why should an agent\'s permission expire and be checked at write time?', a: ['To save storage', 'So an agent whose task was cancelled cannot still commit', 'To speed up reads', 'To avoid indexes'], correct: 1, why: 'Otherwise it is the paused former leader acting on authority it lost.' },
+        { q: 'Why should an agent\'s permission expire and be checked at write time?', a: ['To save storage', 'So an agent whose task was canceled cannot still commit', 'To speed up reads', 'To avoid indexes'], correct: 1, why: 'Otherwise it is the paused former leader acting on authority it lost.' },
       ],
     },
     // ------------------------------------------------------------------ 10
@@ -429,7 +429,7 @@
       challenge: { text: 'Take the best option on both decisions', test: (s) => s.cardsWrong === 0 && s.cardsBest >= 2 },
       quiz: [
         { q: 'A row\'s text changes. What is true of its embedding?', a: ['It updates by itself', 'It is stale until recomputed: derived data', 'It becomes the source of truth', 'It must be deleted'], correct: 1, why: 'This is the cache-invalidation problem, and change data capture is the fix.' },
-        { q: 'Why should agent memory be event-sourced?', a: ['Events are smaller', 'A log can always be re-summarised. A summary that overwrote its source cannot be corrected', 'Summaries are illegal', 'It avoids vectors'], correct: 1, why: 'Summaries are derived from the append-only log, and a better model can re-derive them.' },
+        { q: 'Why should agent memory be event-sourced?', a: ['Events are smaller', 'A log can always be re-summarized. A summary that overwrote its source cannot be corrected', 'Summaries are illegal', 'It avoids vectors'], correct: 1, why: 'Summaries are derived from the append-only log, and a better model can re-derive them.' },
         { q: 'What new reason to reprocess do agents bring?', a: ['Disk failures', 'The model changes', 'Daylight saving time', 'Schema-on-read'], correct: 1, why: 'A new embedding model means re-deriving every vector. Immutable source data makes that routine.' },
       ],
     },
@@ -450,7 +450,7 @@
           '<b>1. Design for an untrusted majority user.</b> Enforcement sits inside the database, on every query.',
           '<b>2. Make undo larger than the transaction.</b> The branch before commit, point-in-time recovery after.',
           '<b>3. Count databases, not just rows.</b> Scale-to-zero and instant creation are capacity features.',
-          '<b>4. Treat legibility as correctness.</b> Names, comments, and error messages change behaviour.',
+          '<b>4. Treat legibility as correctness.</b> Names, comments, and error messages change behavior.',
           '<b>5. Keep one deterministic source of truth.</b> Model outputs are derived data.',
           '<b>6. Attribute every action.</b> Who changed this, on whose behalf, with what instruction.',
         ],

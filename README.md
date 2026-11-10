@@ -94,7 +94,7 @@ There are no dependencies. The code is plain JavaScript loaded with script tags,
 | `js/meta.js` | Ranks, upgrades, achievements, cheat sheet |
 | `js/sim.js` | The simulation. No DOM, deterministic for a given seed |
 | `js/save.js` | Local storage, export, import |
-| `js/audio.js` | Synthesised sound effects and music |
+| `js/audio.js` | Synthesized sound effects and music |
 | `js/render.js` | Canvas renderer |
 | `js/ui.js` | Screens and heads-up display |
 | `js/coach.js` | The guided tutorial in mission 1 |
@@ -114,6 +114,6 @@ To change difficulty, edit the wave definitions in `js/missions.js` and the tool
 
 Concepts follow *Designing Data-Intensive Applications* by Martin Kleppmann (first edition 2017, second edition with Chris Riccomini 2026). This project is not affiliated with the authors, the publisher, or the PostgreSQL project. All graphics and sound are generated in code.
 
-## Licence
+## License
 
 MIT. See `LICENSE`.
