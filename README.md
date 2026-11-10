@@ -4,15 +4,19 @@ A browser game that teaches how to design data-intensive applications when most 
 
 You are the on-call engineer for a database platform. Agents send requests through a gateway to your databases. Good requests earn credits. Wrong ones damage your data. You buy and configure tools to stop them, and every tool has the cost the theory says it has.
 
-The game follows the guide *Designing Data-Intensive Applications, Evolved for the Agent Era*, which is based on Martin Kleppmann's book *Designing Data-Intensive Applications*. Each of the 11 missions covers one section: the book's concept, what agents change, and how it looks in Postgres and Supabase.
+The game follows the guide *Designing Data-Intensive Applications, Evolved for the Agent Era*, which is based on Martin Kleppmann's book *Designing Data-Intensive Applications*. Each of the 11 missions covers one section: the book's concept, what agents change, and how it looks in Postgres.
+
+**[Play it in your browser](https://sao.github.io/control-plane/)**
 
 ## Play
 
 No install and no build step.
 
-**Option 1: open the file.** Download or clone this repository and open `index.html` in a browser.
+**Option 1: play online.** Open [sao.github.io/control-plane](https://sao.github.io/control-plane/).
 
-**Option 2: run a local server.** From the repository folder:
+**Option 2: open the file.** Download or clone this repository and open `index.html` in a browser.
+
+**Option 3: run a local server.** From the repository folder:
 
 ```bash
 python3 -m http.server 8000
@@ -20,16 +24,20 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000`.
 
-**Option 3: GitHub Pages.** In the repository settings, under Pages, deploy from the `main` branch root. The game runs from the published address.
+**Option 4: host your own copy.** Fork the repository, then in its settings, under Pages, deploy from the `main` branch root. The game runs from the published address.
 
 The game needs a window at least 1,000 pixels wide and a recent version of Chrome, Edge, Firefox, or Safari.
 
 ## How it plays
 
+Mission 1 opens with a short guided tutorial. You can skip it, and replay it from Settings.
+
+Before each wave the game tells you what is coming. You buy the tool that stops it, then start the wave.
+
 - **Integrity** is how correct your data is. Threats that land reduce it. At zero the mission ends.
 - **Error budget** drains while p99 latency is over target and each time you refuse a legitimate request. At zero the mission ends.
 - **Credits** come from served requests and buy tools.
-- **Tools** sit on the gateway, the database, or the infrastructure. Each one states its cost. Buying everything loses.
+- **Tools** sit on the gateway, the database, or the infrastructure. You buy one once and it stays on. Each one states its cost. Buying everything loses.
 - **Review cards** ask you to judge a migration, a branch diff, or a consequential action.
 - **The event log** explains what each tool stopped and what each incident was, with the section of the guide it comes from.
 
@@ -89,6 +97,7 @@ There are no dependencies. The code is plain JavaScript loaded with script tags,
 | `js/audio.js` | Synthesised sound effects and music |
 | `js/render.js` | Canvas renderer |
 | `js/ui.js` | Screens and heads-up display |
+| `js/coach.js` | The guided tutorial in mission 1 |
 | `js/main.js` | Game loop, input, rewards |
 | `test/balance.js` | Headless balance check |
 | `docs/spec.md` | Design spec |
@@ -103,7 +112,7 @@ To change difficulty, edit the wave definitions in `js/missions.js` and the tool
 
 ## Credits
 
-Concepts follow *Designing Data-Intensive Applications* by Martin Kleppmann (first edition 2017, second edition with Chris Riccomini 2026). This project is not affiliated with the authors, the publisher, Postgres, or Supabase. All graphics and sound are generated in code.
+Concepts follow *Designing Data-Intensive Applications* by Martin Kleppmann (first edition 2017, second edition with Chris Riccomini 2026). This project is not affiliated with the authors, the publisher, or the PostgreSQL project. All graphics and sound are generated in code.
 
 ## Licence
 

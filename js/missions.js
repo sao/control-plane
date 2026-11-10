@@ -39,7 +39,7 @@
           'The remedy is the one the book gives for human error: limit what can be done, make mistakes cheap to undo, and provide a sandbox away from production.',
         ],
         pg: [
-          'The Supabase MCP server applies that remedy as product features: a read-only mode, scoping to one project, and branches for trying changes away from production.',
+          'In Postgres the same remedy is a read-only role, one role and connection per project, and a copy-on-write branch for trying changes away from production.',
           'Point-in-time recovery replays the write-ahead log to restore the database to a past moment.',
         ],
       },
@@ -163,7 +163,7 @@
         ],
         pg: [
           'Migrations are files of SQL applied in order, each recorded so it runs once.',
-          'The Supabase MCP server exposes migration and branching tools, so an agent applies a change to a branch first.',
+          'With copy-on-write branching, an agent applies a migration to a branch first and merges it only if it passes.',
         ],
       },
       waves: [
@@ -189,7 +189,7 @@
       id: 'm5', n: 5, income: 0.26, title: 'Time Moves Backward', sub: 'Replication',
       tagline: 'A stale read becomes a wrong action.',
       nodes: nodes('src', 'gw', 'leader', 'r1', 'r2'), slo: 500, credits: 110, stars: STARS,
-      modules: ['replicas', 'syncRep', 'ryw', 'realtime'], abilities: ['failover'], staleK: 0.045,
+      modules: ['replicas', 'syncRep', 'ryw', 'changeFeed'], abilities: ['failover'], staleK: 0.045,
       brief: {
         concept: [
           'You replicate to survive a machine failing, to serve more reads, and to place data near users.',
@@ -204,7 +204,7 @@
         ],
         pg: [
           'Postgres replicates by shipping its write-ahead log to followers. Logical replication sends row-level changes that other systems can consume.',
-          'Supabase Realtime uses logical replication to push changes to clients. An agent is told the data changed instead of trusting an old read.',
+          'A change feed built on logical replication pushes changes to clients. An agent is told the data changed instead of trusting an old read.',
         ],
       },
       waves: [
@@ -245,8 +245,8 @@
           'The new hot spot is fleet management: starting, pausing, upgrading, and billing millions of tiny databases.',
         ],
         pg: [
-          'Multigres, led by the creator of Vitess, aims to bring classic sharding to Postgres.',
-          'The Turso acquisition covers the other extreme: very large numbers of small, mostly idle databases.',
+          'Postgres partitions a table natively on one machine. Extensions such as Citus spread the partitions across machines.',
+          'Serverless Postgres covers the other extreme: very large numbers of small, mostly idle databases that start in seconds and pause when unused.',
         ],
       },
       waves: [

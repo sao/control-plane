@@ -52,14 +52,14 @@
 
   // The guide's cheat sheet. Each row unlocks with a mission.
   CP.CHEATS = [
-    { m: 'm1', concept: 'Reliability', book: 'Tolerate faults from hardware, software, and people', agents: 'The agent is a fourth fault source; limit, sandbox, undo', pg: 'MCP read-only mode, project scoping, branches' },
+    { m: 'm1', concept: 'Reliability', book: 'Tolerate faults from hardware, software, and people', agents: 'The agent is a fourth fault source; limit, sandbox, undo', pg: 'Read-only roles, one role per project, branches' },
     { m: 'm1', concept: 'Maintainability', book: 'Operable, simple, evolvable for people', agents: 'Schema must be legible to models too', pg: 'Names, comments, constraints as instructions' },
     { m: 'm2', concept: 'Data models', book: 'Relational, document, graph; pick by relationships', agents: 'SQL is what models write well; embeddings are a fourth shape', pg: 'Tables, jsonb, pgvector in one engine' },
     { m: 'm3', concept: 'Storage engines', book: 'Indexes trade write cost for read speed', agents: 'Approximate vector indexes; object storage; copy-on-write', pg: 'B-tree, write-ahead log, HNSW' },
     { m: 'm4', concept: 'Schema evolution', book: 'Old and new code must coexist', agents: 'Constant unreviewed migrations; tool definitions are schemas', pg: 'Migrations applied to a branch first' },
-    { m: 'm5', concept: 'Replication', book: 'Copies for safety and reads; lag causes anomalies', agents: 'Stale reads become wrong actions; context is a stale replica', pg: 'Read replicas, logical replication, Realtime' },
-    { m: 'm6', concept: 'Partitioning', book: 'Split by key; avoid until necessary', agents: 'Database per agent partitions by actor', pg: 'Multigres for sharding, per-agent databases' },
-    { m: 'm6', concept: 'Scalability', book: 'Describe load, measure percentiles, plan growth', agents: 'Number of databases and start-up speed become load', pg: 'Scale-to-zero, Turso for many small databases' },
+    { m: 'm5', concept: 'Replication', book: 'Copies for safety and reads; lag causes anomalies', agents: 'Stale reads become wrong actions; context is a stale replica', pg: 'Read replicas, logical replication, change feeds' },
+    { m: 'm6', concept: 'Partitioning', book: 'Split by key; avoid until necessary', agents: 'Database per agent partitions by actor', pg: 'Native partitioning, Citus for sharding, per-agent databases' },
+    { m: 'm6', concept: 'Scalability', book: 'Describe load, measure percentiles, plan growth', agents: 'Number of databases and start-up speed become load', pg: 'Scale-to-zero, serverless Postgres for many small databases' },
     { m: 'm7', concept: 'Transactions', book: 'ACID; know your isolation level', agents: 'Tasks outgrow transactions; branch is the new unit', pg: 'Serializable mode, branching, point-in-time recovery' },
     { m: 'm8', concept: 'Distributed faults', book: 'Timeouts are ambiguous; use idempotence and fencing', agents: 'Constant retries; agent as paused process; prompt injection', pg: 'ON CONFLICT, row-level security' },
     { m: 'm9', concept: 'Consensus', book: 'Agree on one order of events by majority', agents: 'Database as shared ground; ordered log as audit trail', pg: 'Row locks, advisory locks, failover' },

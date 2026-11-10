@@ -9,7 +9,7 @@
       missions: {},            // id -> { stars, plays, wins, medal, quiz: [bool], best: {integrity, budget} }
       upgrades: {},            // id -> level
       ach: {},                 // id -> timestamp
-      seen: { threats: {}, howto: false },
+      seen: { threats: {}, howto: false, tutorial: false },
       endless: { bestWave: 0 },
       stats: { served: 0, blocked: 0, cardsRight: 0 },
       settings: { sfx: 0.7, music: 0.45, reduceMotion: false, incidentPause: true },

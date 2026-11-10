@@ -4,7 +4,7 @@ A browser game that teaches *Designing Data-Intensive Applications, Evolved for 
 
 ## Goals
 
-- Teach each of the guide's 11 sections by doing: the book's concept, what agents change, and the Postgres/Supabase practice.
+- Teach each of the guide's 11 sections by doing: the book's concept, what agents change, and the Postgres practice.
 - Make the player reason about trade-offs. Every defence has the cost the guide describes.
 - Short, medium, and long reward loops. Progress saved locally.
 - No build step and no dependencies. Runs by opening `index.html`, and from GitHub Pages.
@@ -21,7 +21,7 @@ Three meters:
 
 Player verbs:
 
-- Buy and toggle tools on the gateway, the database, or the infrastructure.
+- Buy tools on the gateway, the database, or the infrastructure. A tool stays on once bought; switching one off is a rare escape hatch.
 - Fire abilities with cooldowns: rewind (point-in-time recovery), failover.
 - Answer review cards: migrations, branch diffs, consequential actions.
 
@@ -35,7 +35,7 @@ The game runs in real time with pause. A feed explains each block and each incid
 | 2 | Data models | Malformed writes, misread schema | Constraints, legible schema, pgvector; trap: loose jsonb intake |
 | 3 | Storage | Load only | Hot index, HNSW, columnar copy; trap: index everything |
 | 4 | Schema evolution | Breaking migrations | Human review, compatibility lint, branch-first |
-| 5 | Replication | Stale reads, leader loss | Replicas, sync replication, read-your-writes, Realtime, failover |
+| 5 | Replication | Stale reads, leader loss | Replicas, sync replication, read-your-writes, change feed, failover |
 | 6 | Partitioning | Overload, hot keys, scratch mistakes | Range, hash, database-per-agent, scale-to-zero |
 | 7 | Transactions | Bad tasks, write skew | Task branches, serializable, constraints, rewind; trap: long transactions |
 | 8 | Distributed faults | Duplicates, stale writes, injection | Idempotency keys, version check, row-level security, approval |
@@ -64,6 +64,7 @@ An endless mode unlocks after mission 6.
 | `js/audio.js` | Synthesised sound effects and ambient music |
 | `js/render.js` | Canvas renderer |
 | `js/ui.js` | Screens and heads-up display |
+| `js/coach.js` | Guided tutorial for mission 1: spotlights one control at a time and waits for the player to use it |
 | `js/main.js` | Game loop and wiring |
 | `test/balance.js` | Headless balance checks run with Node |
 

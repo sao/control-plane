@@ -21,7 +21,7 @@
     return '<div class="cols3">' +
       '<div class="pane glass"><h3>The concept</h3>' + paras(b.concept) + '</div>' +
       '<div class="pane glass agents"><h3>What agents change</h3>' + paras(b.agents) + '</div>' +
-      '<div class="pane glass pg"><h3>In Postgres and Supabase</h3>' + paras(b.pg) + '</div></div>';
+      '<div class="pane glass pg"><h3>In Postgres</h3>' + paras(b.pg) + '</div></div>';
   }
 
   const T = {
@@ -190,7 +190,7 @@
         });
         body += '</div>';
       } else {
-        body = '<div class="pane glass"><table class="th cheat"><tr><th>Concept</th><th>What the book teaches</th><th>How it evolves with agents</th><th>Postgres and Supabase</th></tr>';
+        body = '<div class="pane glass"><table class="th cheat"><tr><th>Concept</th><th>What the book teaches</th><th>How it evolves with agents</th><th>In Postgres</th></tr>';
         for (const c of CP.CHEATS) {
           const open = (d.missions[c.m] || {}).wins > 0;
           body += open ? '<tr><td><b>' + esc(c.concept) + '</b></td><td>' + esc(c.book) + '</td><td>' + esc(c.agents) + '</td><td>' + esc(c.pg) + '</td></tr>'
@@ -229,6 +229,7 @@
         '<div class="setrow"><label for="set-mus">Music</label><input id="set-mus" type="range" min="0" max="1" step="0.05" value="' + st.music + '" data-set="music"></div>' +
         '<div class="setrow"><label for="set-rm">Reduce motion (no screen shake, fewer particles)</label><input id="set-rm" type="checkbox" data-set="reduceMotion"' + (st.reduceMotion ? ' checked' : '') + '></div>' +
         '<div class="setrow"><label for="set-ip">Pause and explain the first time a new threat lands</label><input id="set-ip" type="checkbox" data-set="incidentPause"' + (st.incidentPause ? ' checked' : '') + '></div>' +
+        '<div class="setrow"><div>Tutorial<div class="dim" style="font-size:12px">A guided run through the first two waves of mission 1.</div></div><button class="btn small" style="justify-self:start" data-act="tutorial">Replay the tutorial</button></div>' +
         '<div class="setrow" style="border:0;align-items:start"><div>Save data<div class="dim" style="font-size:12px">Stored in this browser only' + (CP.store.ok ? '.' : '. This browser is blocking storage, so progress will not be kept.') + '</div></div><div>' +
         '<div class="actions" style="margin:0 0 10px"><button class="btn small" data-act="exportSave">Export</button><button class="btn small" data-act="importSave">Import</button><button class="btn small danger" data-act="resetSave">Erase progress</button></div>' +
         '<textarea class="io" id="io" spellcheck="false" placeholder="Export writes your save here. To import, paste a save here and press Import."></textarea>' +
@@ -244,7 +245,7 @@
         '<li>Agents send requests from the left, through the gateway, to your database. Good requests earn <b>credits</b>.</li>' +
         '<li>Red requests are <b>threats</b>. If one lands, you lose <b>integrity</b>.</li>' +
         '<li><b>Error budget</b> drains while p99 latency is over target, and each time you refuse a good request.</li>' +
-        '<li>Buy and switch <b>tools</b> in the right-hand panel. Every tool has a cost. Read it.</li>' +
+        '<li>Before each wave, read what is coming, then buy the <b>tool</b> that stops it in the right-hand panel. A tool stays on once bought. Every tool has a cost. Read it.</li>' +
         '<li>The event log on the left explains what each tool stopped and what each incident was.</li>' +
         '<li><kbd>Space</kbd> starts a wave or pauses. You can buy tools and answer reviews while paused. <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> set speed.</li></ul>' +
         '<button class="btn primary" data-act="closeModal">Start</button></div>';
@@ -260,6 +261,7 @@
       return '<div class="mbox"><div class="kicker">Paused</div><h2>' + esc(m.title) + '</h2><div class="stack">' +
         '<button class="btn primary" data-act="closeModal">Resume</button>' +
         (m.brief ? '<button class="btn" data-act="showBrief">Read the briefing</button>' : '') +
+        (m.id === 'm1' ? '<button class="btn" data-act="tutorial">Restart with the tutorial</button>' : '') +
         '<button class="btn" data-act="restart">Restart mission</button>' +
         '<button class="btn" data-act="quit">Leave to mission log</button></div></div>';
     },

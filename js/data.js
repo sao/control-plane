@@ -93,7 +93,7 @@
       sqls: ['INSERT INTO payments (order_id) VALUES ($1)  -- retry of a write that already succeeded', "UPDATE orders SET status = 'pending'  -- overwrote a newer status"],
       what: 'An agent read from a lagging follower, took the old data as fact, and acted on it.',
       lesson: 'A person who sees old data refreshes the page. An agent takes what it read as fact and acts. Agents in a read-then-act loop need read-your-writes as a guarantee.',
-      counter: 'Read-your-writes routing, synchronous replication, or Realtime change notifications.',
+      counter: 'Read-your-writes routing, synchronous replication, or a change feed.',
     },
     scratchMistake: {
       name: 'Scratch-work mistake', tag: 'OOPS', kind: 'write', dmg: 7, sec: 6, contained: ['fleet'], flags: { scratch: true },
@@ -182,19 +182,19 @@
       blockKinds: ['write', 'migration', 'task', 'action', 'job'],
       desc: 'The gateway refuses every statement that changes data.',
       tradeoff: 'Blocks good writes too. Each refused legitimate request burns error budget.',
-      pg: 'The Supabase MCP server has a read-only mode.',
+      pg: 'A role granted only SELECT cannot change data, whatever the agent sends.',
     },
     scoping: {
       name: 'Project scoping', short: 'SCOPED', at: 'gw', cost: 50, sec: 1, blocks: ['crossProject'],
       desc: 'Each agent connection is pinned to one project.',
       tradeoff: 'No run-time cost. An agent that needs two projects needs two connections.',
-      pg: 'The Supabase MCP server can be scoped to a single project.',
+      pg: 'Give each agent its own role and connection, with access to one project\'s database only.',
     },
     sandbox: {
       name: 'Branch for schema changes', short: 'BRANCH', at: 'infra', cost: 90, sec: 1, activates: ['branch'],
       desc: 'Agent migrations run on a copy-on-write branch first. Changes that pass are merged. Changes that break things never reach production.',
       tradeoff: 'Schema changes take longer to land.',
-      pg: 'Supabase branches. The MCP server exposes branching tools so an agent applies a change to a branch first.',
+      pg: 'Postgres services with copy-on-write branching let an agent apply a change to a branch first.',
     },
     constraints: {
       name: 'Constraints', short: 'CHECKS', at: 'db', cost: 60, sec: 2, blocks: ['malformed'], svc: { write: 1.1 },
@@ -274,29 +274,29 @@
       tradeoff: 'Those reads return to the leader and add to its load.',
       pg: 'Route by session: after a write, pin that agent\'s reads to the primary.',
     },
-    realtime: {
-      name: 'Realtime change feed', short: 'REALTIME', at: 'db', cost: 90, sec: 5,
+    changeFeed: {
+      name: 'Change feed', short: 'FEED', at: 'db', cost: 90, sec: 5,
       desc: 'Agents are told when data changes instead of trusting an old read. Stale actions fall by 80%.',
       tradeoff: 'Costs more, and does not remove lag itself.',
-      pg: 'Supabase Realtime uses logical replication to push row-level changes to clients.',
+      pg: 'Logical replication streams row-level changes that can be pushed to clients. LISTEN and NOTIFY cover simpler cases.',
     },
     partRange: {
       name: 'Partition by key range', short: 'RANGE', at: 'infra', cost: 90, sec: 6, activates: ['s1', 's2', 's3'], deactivates: ['leader'], excl: ['partHash'],
       desc: 'Records sorted by key across three shards, like volumes of an encyclopedia. Range scans stay on one shard.',
       tradeoff: 'Hot ranges. One busy account overloads one shard. Switching scheme means rebalancing.',
-      pg: 'Multigres aims to bring classic sharding to Postgres.',
+      pg: 'PARTITION BY RANGE splits a table on one machine. Spreading the parts across machines needs an extension such as Citus.',
     },
     partHash: {
       name: 'Partition by hash of key', short: 'HASH', at: 'infra', cost: 90, sec: 6, activates: ['s1', 's2', 's3'], deactivates: ['leader'], excl: ['partRange'],
       desc: 'A hash function scatters records evenly across three shards. Load is balanced, even for a hot account.',
       tradeoff: 'Range scans must ask every shard: they take twice as long. Switching scheme means rebalancing.',
-      pg: 'Multigres aims to bring classic sharding to Postgres.',
+      pg: 'PARTITION BY HASH splits a table on one machine. Extensions such as Citus distribute rows across machines by a hash of the key.',
     },
     perAgent: {
       name: 'Database per agent', short: 'PER-AGENT', at: 'infra', cost: 90, upkeep: 1.2, sec: 6, activates: ['fleet'],
       desc: 'Each agent gets its own small database for scratch state. Mistakes stay inside it. Attribution is free.',
       tradeoff: 'Thousands of databases to run and pay for. Questions across all agents need a fan-out query.',
-      pg: 'Supabase reported agents creating 70% of new databases. Turso covers very large numbers of small databases.',
+      pg: 'Serverless Postgres services create a database in seconds, which makes one per agent practical.',
     },
     scaleToZero: {
       name: 'Scale to zero', short: 'SCALE-0', at: 'infra', host: 'fleet', cost: 50, sec: 6,
@@ -338,7 +338,7 @@
       name: 'Row-level security', short: 'RLS', at: 'db', cost: 80, sec: 8, blocks: ['injected'], svc: { read: 1.08, write: 1.08 },
       desc: 'Access rules enforced inside the database on every query, whatever the agent was told.',
       tradeoff: 'A policy check on every row: reads and writes are 8% slower.',
-      pg: 'CREATE POLICY. Supabase\'s MCP table listing warns the agent when row-level security is off.',
+      pg: 'CREATE POLICY. Policies do nothing until the table has ENABLE ROW LEVEL SECURITY.',
     },
     approval: {
       name: 'Approval for consequential actions', short: 'APPROVAL', at: 'gw', cost: 40, sec: 8,
@@ -380,7 +380,7 @@
       name: 'Automatic failover', short: 'AUTO-FAIL', at: 'infra', host: 'r1', cost: 90, sec: 9,
       desc: 'Followers agree by majority vote to promote a new leader within moments of a crash.',
       tradeoff: 'Consensus is hard to build. Use a system that already has it.',
-      pg: 'Failover between leader and follower is where consensus is needed. Multigres includes automatic failover.',
+      pg: 'Failover between leader and follower is where consensus is needed. Tools such as Patroni run it on top of a consensus store.',
     },
     nightlyBatch: {
       name: 'Batch re-embed', short: 'BATCH', at: 'infra', cost: 30, sec: 10, activates: ['embed'],
@@ -392,7 +392,7 @@
       name: 'Change capture to embeddings', short: 'CDC', at: 'infra', cost: 100, upkeep: 0.5, sec: 10, activates: ['embed'],
       desc: 'Every row change becomes an event. A function computes a new embedding and stores it next to the source row.',
       tradeoff: 'A pipeline to run and pay for.',
-      pg: 'Logical replication is Postgres\'s change data capture. Supabase Realtime and ETL read changes this way.',
+      pg: 'Logical replication is Postgres\'s change data capture. Downstream systems subscribe to the stream of row changes.',
     },
     eventMemory: {
       name: 'Event-sourced agent memory', short: 'EVENTS', at: 'db', cost: 70, sec: 10,

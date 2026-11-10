@@ -376,7 +376,7 @@
         if (this.m.usesStale) this.stale += this.m.staleGain;
       }
       if (p.kind === 'read' && p.acts && n.type === 'replica') {
-        const prob = clamp(this.lag * (this.m.staleK || 0.045), 0, 0.5) * (this.isOn('realtime') ? 0.2 : 1);
+        const prob = clamp(this.lag * (this.m.staleK || 0.045), 0, 0.5) * (this.isOn('changeFeed') ? 0.2 : 1);
         if (this.rng() < prob) {
           this.spawn('staleAct');
           this.logGated('stale', 3, 'warn', 'STALE READ  an agent read a follower ' + this.lag.toFixed(1) + 's behind and is about to act on it', 5);

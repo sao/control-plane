@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const CP = globalThis.CP, ui = CP.ui, store = CP.store, audio = CP.audio, $ = ui.$;
+  const CP = globalThis.CP, ui = CP.ui, store = CP.store, audio = CP.audio, coach = CP.coach, $ = ui.$;
   const STEP = 1 / 30;
 
   const app = (CP.app = {
@@ -14,7 +14,7 @@
     if (name !== app.screen && ['title', 'map', 'brief', 'game', 'debrief'].includes(app.screen)) app.prev = app.screen === 'brief' || app.screen === 'game' || app.screen === 'debrief' ? 'map' : app.screen;
     app.screen = name;
     $('hud').hidden = name !== 'game';
-    if (name !== 'game') { app.sim = null; audio.intensity = 0; renderer.parts = []; renderer.rings = []; renderer.texts = []; renderer.vig = 0; }
+    if (name !== 'game') { coach.stop(); app.sim = null; audio.intensity = 0; renderer.parts = []; renderer.rings = []; renderer.texts = []; renderer.vig = 0; }
     if (name === 'title') ui.show(ui.T.title());
     else if (name === 'map') ui.show(ui.T.map());
     else if (name === 'brief') { app.briefId = arg; ui.show(ui.T.brief(mission(arg))); }
@@ -101,11 +101,20 @@
     store.save();
     audio.init(); audio.startMusic(); audio.intensity = 0;
     sim.log('info', 'On call for ' + m.title + '. Read the wave warning, buy what you need, then start.');
-    if (!store.data.seen.howto) { store.data.seen.howto = true; store.save(); queueModal('howto', ui.M.howto()); }
+    coach.stop();
+    if (m.id === 'm1' && !store.data.seen.tutorial) {
+      // The guided run replaces the one-page introduction.
+      store.data.seen.howto = true; store.save();
+      coach.start(sim, (finished) => {
+        store.data.seen.tutorial = true; store.save();
+        if (finished) ui.toast('Tutorial complete', 'The rest of the shift is yours.', 'gold');
+      });
+    } else if (!store.data.seen.howto) { store.data.seen.howto = true; store.save(); queueModal('howto', ui.M.howto()); }
   }
 
   function onSim(type, d, sim) {
     if (sim !== app.sim) return;
+    coach.onSim(type, d, sim);
     switch (type) {
       case 'feed': ui.hud.feedLine(d); break;
       case 'serve': audio.sfx('serve', sim.streak); break;
@@ -199,6 +208,9 @@
     closeModal() { closeModal(); },
     showBrief() { openModal('brief', ui.M.brief(app.mission)); },
     restart() { closeModal(); app.modalQueue = []; startMission(app.mission.id); },
+    tutorial() { if (app.modal) closeModal(); app.modalQueue = []; store.data.seen.tutorial = false; store.save(); startMission('m1'); },
+    coachNext() { coach.next(); },
+    coachSkip() { coach.end(false); },
     quit() { closeModal(); app.modalQueue = []; audio.intensity = 0; go('map'); },
     quiz(d) {
       const res = app.res, q = +d.q, a = +d.a;
@@ -263,7 +275,8 @@
       return;
     }
     const sim = app.sim;
-    if (e.key === ' ') { e.preventDefault(); if (sim.phase === 'build') acts.startWave(); else togglePause(); }
+    if (e.key === 'Enter' && coach.hasNext()) { e.preventDefault(); audio.sfx('click'); coach.next(); }
+    else if (e.key === ' ') { e.preventDefault(); if (sim.phase === 'build') acts.startWave(); else if (!coach.hold) togglePause(); }
     else if (e.key === 'Escape') acts.pause();
     else if (e.key === '1' || e.key === '2' || e.key === '3') { app.speed = +e.key; app.paused = false; }
     else if (e.key === 'r' || e.key === 'R') acts.abil({ id: 'rewind' });
@@ -278,7 +291,8 @@
     last = ts;
     const sim = app.sim;
     if (sim && app.screen === 'game') {
-      if (!app.paused && !app.modal && !app.ended) {
+      coach.tick(sim, app);
+      if (!app.paused && !app.modal && !app.ended && !coach.hold) {
         app.acc += dt * app.speed;
         let n = 0;
         while (app.acc >= STEP && n < 10) { sim.step(STEP); app.acc -= STEP; n++; }
