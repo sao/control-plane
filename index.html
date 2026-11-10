@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Control Plane: a game that teaches data-intensive application design in the agent era.">
+<title>Control Plane</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070b14'/%3E%3Cellipse cx='16' cy='10' rx='9' ry='3.6' fill='none' stroke='%235ef2c2' stroke-width='2'/%3E%3Cpath d='M7 10v12c0 2 4 3.6 9 3.6s9-1.6 9-3.6V10' fill='none' stroke='%235ef2c2' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="stage" aria-hidden="true"></canvas>
+
+<div id="hud" hidden>
+  <header id="top">
+    <button class="chip-btn" data-act="pause" title="Menu (Esc)">MENU</button>
+    <div class="mtitle">
+      <div class="mt-row"><span id="h-n" class="tag"></span><b id="h-title"></b></div>
+      <div class="mt-row dim"><span id="h-wave"></span><div class="wavebar"><i id="h-wavebar"></i></div></div>
+    </div>
+    <div class="meter" id="m-int" title="Integrity: how correct your data is. At zero the mission ends.">
+      <label>Integrity</label><div class="bar"><i></i></div><span class="val"></span>
+    </div>
+    <div class="meter" id="m-bud" title="Error budget: drains while p99 is over target and when legitimate requests are refused. At zero the mission ends.">
+      <label>Error budget</label><div class="bar"><i></i></div><span class="val"></span>
+    </div>
+    <div class="meter" id="m-p99" title="p99 latency: what your slowest interactive requests experience. The mark is the target.">
+      <label>p99 latency</label><div class="bar"><i></i><em></em></div><span class="val"></span>
+    </div>
+    <div class="stat" id="m-cr" title="Credits: earned by serving requests, spent on tools."><label>Credits</label><span class="val"></span><span class="sub"></span></div>
+    <div class="stat" id="m-streak" title="Requests served in a row with no incident and no refusal. Every 25 pays a bonus."><label>Clean streak</label><span class="val"></span></div>
+    <div class="speed" id="speed">
+      <button data-act="speed" data-v="0" title="Pause (Space)">PAUSE</button>
+      <button data-act="speed" data-v="1" title="1">1×</button>
+      <button data-act="speed" data-v="2" title="2">2×</button>
+      <button data-act="speed" data-v="3" title="3">3×</button>
+    </div>
+  </header>
+
+  <aside id="left">
+    <div class="col-h" id="cards-h">Reviews <span id="cards-n"></span></div>
+    <div id="cards"></div>
+    <div class="col-h">Event log</div>
+    <div id="feed" aria-live="off"></div>
+  </aside>
+
+  <main id="field">
+    <div id="cta" hidden></div>
+    <div id="pausetag" hidden>PAUSED</div>
+    <div id="legend"></div>
+  </main>
+
+  <aside id="right">
+    <div class="col-h">Tools <span class="hint">click to buy or switch</span></div>
+    <div id="tools"></div>
+    <div id="abils"></div>
+  </aside>
+</div>
+
+<div id="screen"></div>
+<div id="modal" hidden></div>
+<div id="toasts"></div>
+<div id="narrow">Control Plane needs a wider window. Make this window at least 1,000 pixels wide.</div>
+
+<script src="js/core.js"></script>
+<script src="js/data.js"></script>
+<script src="js/missions.js"></script>
+<script src="js/meta.js"></script>
+<script src="js/sim.js"></script>
+<script src="js/save.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/render.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
